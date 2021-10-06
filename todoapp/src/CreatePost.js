@@ -28,8 +28,10 @@ export default function CreatePost ({user}) {
     }
 
     const createPost = () => {
-        setPost(post => post.concat({"title": title, "content": content, "author": author, "complete": false, "dateCompleted": '', "dateCreated": Date.now()}));
-        console.log({user});
+        const newPost = {title, content, author:user, dateCreated: Date.now().toLocaleString()}
+        setPost([newPost, ...post])
+        //setPost(post => post.concat({"title": title, "content": content, "author": author, "complete": false, "dateCompleted": '', "dateCreated": Date.now()}));
+        //console.log({user});
     }
 
     return (
