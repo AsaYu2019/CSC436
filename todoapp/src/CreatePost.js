@@ -1,11 +1,11 @@
-import React, { useState, useEffect} from 'react'
-import ReactDOM from 'react-dom';
+import React, { useState} from 'react'
 import PostList from './PostList'
 
 export default function CreatePost ({user}) {
     const [ post, setPost ] = useState([])
     const [ title, setTitle ] = useState('')
     const [ content, setContent ] = useState('')
+    const [author, setAuthor] = useState('')
 
     const titleHandler = (e) => {
         setTitle(e.target.value)
@@ -28,8 +28,8 @@ export default function CreatePost ({user}) {
     }
 
     const createPost = () => {
-        setPost(post => post.concat({"title": title, "content": content, "complete": false, "dateCompleted": '', "dateCreated": Date.now()}));
-        //console.log(content);
+        setPost(post => post.concat({"title": title, "content": content, "author": author, "complete": false, "dateCompleted": '', "dateCreated": Date.now()}));
+        console.log({user});
     }
 
     return (
@@ -40,7 +40,7 @@ export default function CreatePost ({user}) {
                     <label htmlFor="create-title">Title:</label>
                     <input type="title" name="create-title" id="create-title" onChange={titleHandler} />
                 </div>
-                <textarea type="content" name="create-tod" id="create-todo" onChange={contentHandler} />
+                <textarea type="content" name="create-todo" id="create-todo" onChange={contentHandler} />
                 <br></br>
                 <input type="submit" onClick={() => createPost()} value="Create"/>
             </form>

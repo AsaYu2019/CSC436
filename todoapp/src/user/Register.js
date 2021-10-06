@@ -1,6 +1,6 @@
 import React ,{useState} from 'react'
 
-export default function Register(setUser) {
+export default function Register({setUser}) {
     const [ username, setUsername ] = useState('')
     const [ password, setPassword ] = useState('')
     const [ passwordRepeat, setPasswordRepeat ] = useState('')

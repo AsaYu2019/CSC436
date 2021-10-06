@@ -3,7 +3,6 @@ import Login from './user/Login'
 import Logout from './user/Logout'
 import Register from './user/Register'
 import CreatePost from './CreatePost';
-import PostList from './PostList';
 
 export default function UserBar() {
     //const user = ''
