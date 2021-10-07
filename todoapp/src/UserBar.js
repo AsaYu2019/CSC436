@@ -18,14 +18,28 @@ export default function UserBar() {
                 throw new Error()
         }
     }
+    function postReducer(state, action){
+        switch (action.type){
+            case "CREATE_POST":
+                const newPost = {
+                    title: action.title,
+                    content: action.content,
+                    author: action.author,
+                    dateCreated: action.dateCreated
+                }
+                return [newPost, ...state]
+            default:
+                throw new Error()
+        }
+    }
 
     const [user, dispatchUser] = useReducer(userReducer, '')
-
+    const [post, dispatchPost] = useReducer(postReducer, [])
     if (user) {
         return (
             <div>
             <Logout user={user} dispatchUser = {dispatchUser}/>
-            <CreatePost user = {user} />
+            <CreatePost user = {user} dispatchPost = {dispatchPost}/>
             </div>
         )
     } else {

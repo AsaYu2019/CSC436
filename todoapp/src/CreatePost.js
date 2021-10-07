@@ -1,7 +1,7 @@
 import React, { useState} from 'react'
 import PostList from './PostList'
 
-export default function CreatePost ({user}) {
+export default function CreatePost ({user, dispatchPost}) {
     const [ post, setPost ] = useState([])
     const [ title, setTitle ] = useState('')
     const [ content, setContent ] = useState('')
@@ -36,7 +36,7 @@ export default function CreatePost ({user}) {
 
     return (
         <>
-            <form onSubmit={e => e.preventDefault()}>
+            <form onSubmit={e => {e.preventDefault(); dispatchPost({type: "CREATE_POST", title,content,author:user,dateCreated:Date.now})}}>
                 <div>Author: <b>{user}</b></div>
                 <div>
                     <label htmlFor="create-title">Title:</label>
