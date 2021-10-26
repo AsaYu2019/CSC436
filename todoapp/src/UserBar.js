@@ -3,8 +3,10 @@ import Login from './user/Login'
 import Logout from './user/Logout'
 import Register from './user/Register'
 import CreatePost from './CreatePost';
+import {StateContext} from './Contexts';
 
 export default function UserBar() {
+    
     //const user = ''
     //const [ user, setUser ] = useState('Asa')
     function userReducer(state, action){
@@ -33,13 +35,16 @@ export default function UserBar() {
         }
     }
 
-    const [user, dispatchUser] = useReducer(userReducer, '')
+    const [user, dispatchUser] = useReducer(userReducer, 'Asa')
     const [post, dispatchPost] = useReducer(postReducer, [])
+
     if (user) {
         return (
             <div>
-            <Logout user={user} dispatchUser = {dispatchUser}/>
-            <CreatePost user = {user} dispatchPost = {dispatchPost}/>
+                <StateContext.Provider value = {{state: user, dispatchuser: dispatchUser, dispatchPost: dispatchPost}}>
+                <Logout user={user} dispatchUser = {dispatchUser}/>
+                <CreatePost user = {user} dispatchPost = {dispatchPost}/>
+                </StateContext.Provider>
             </div>
         )
     } else {

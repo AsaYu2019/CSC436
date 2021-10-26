@@ -1,0 +1,5 @@
+{
+    "posts": [{"id":1,"title":"portal","content":"Some content"}],
+    "users":[{ "id": 1, "username": "paul", "password": "badpassword" }],
+    "themes": [ { "id": 1, "primaryColor": "deepskyblue", "secondaryColor": "coral" }]
+}
