@@ -1,9 +1,16 @@
-import React, { Component } from 'react'
+import React, { useContext } from 'react'
 import Post from './Post'
 
-export default function PostList (props) {
-    return (
-    <div>
-    {props.posts.map((p, i) => <Post {...p} index={i} key={i} completedHandler={props.completedHandler} />)}
-    </div> )
+import { StateContext } from './Contexts'
+
+export default function PostList () {
+      const {state} = useContext(StateContext)
+      const {posts} = state;
+
+     return (
+      <div>
+       {posts.map((p, i) => <Post {...p} short={true} title={p.title} author={p.author} key={'post-' + i} postId={p.id}/>)}
+      </div> 
+      )
 }
+    

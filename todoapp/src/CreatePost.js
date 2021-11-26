@@ -1,52 +1,56 @@
-import React, { useState} from 'react'
-import PostList from './PostList'
+import React, {useState, useEffect, useContext} from 'react'
+import { StateContext } from './Contexts'
+import { useResource } from 'react-request-hook'
 
-export default function CreatePost ({user, dispatchPost}) {
-    const [ post, setPost ] = useState([])
+import { useNavigation } from 'react-navi'
+
+export default function CreatePost () {
+
     const [ title, setTitle ] = useState('')
     const [ content, setContent ] = useState('')
-    const [author, setAuthor] = useState('')
 
-    const titleHandler = (e) => {
-        setTitle(e.target.value)
-    }
+    const navigation = useNavigation()
 
-    const contentHandler = (e) => {
-        setContent(e.target.value);
-    }
+    const {state, dispatch} = useContext(StateContext)
+    const {user} = state;
 
-    const completedHandler = (index) => {
-       const newPost = [...post]
-       newPost[index].complete = !newPost[index].complete
-        if (newPost[index].complete) {
-            newPost[index].dateCompleted = Date.now()
-        }
-        else {
-            newPost[index].dateCompleted = ''
-        }
-       setPost(newPost)
-    }
+    const [post , createPost ] = useResource(({ title, content, author }) => ({
+            url: '/post',
+            method: 'post',
+            headers: {"Authorization": `${state.user.access_token}`},
+            data: { title, content, author }
+        }))
 
-    const createPost = () => {
-        const newPost = {title, content, author:user, dateCreated: Date.now().toLocaleString()}
-        setPost([newPost, ...post])
-        //setPost(post => post.concat({"title": title, "content": content, "author": author, "complete": false, "dateCompleted": '', "dateCreated": Date.now()}));
-        //console.log({user});
-    }
+    function handleTitle (evt) { setTitle(evt.target.value) }
 
-    return (
-        <>
-            <form onSubmit={e => {e.preventDefault(); dispatchPost({type: "CREATE_POST", title,content,author:user,dateCreated:Date.now})}}>
-                <div>Author: <b>{user}</b></div>
-                <div>
-                    <label htmlFor="create-title">Title:</label>
-                    <input type="title" name="create-title" id="create-title" onChange={titleHandler} />
-                </div>
-                <textarea type="content" name="create-todo" id="create-todo" onChange={contentHandler} />
-                <br></br>
-                <input type="submit" onClick={() => createPost()} value="Create"/>
-            </form>
-            <PostList posts={post} completedHandler={completedHandler} />
-        </> 
-    )
-}
+    function handleContent (evt) { setContent(evt.target.value) }
+
+    function handleCreate () {
+            createPost({ title, content, author: user.username })
+        }
+        
+    useEffect(() => {
+        if (post && post.data) {
+            dispatch({ type: 'CREATE_POST', title: post.data.title, content: post.data.content, id: post.data.id, author: user.username })
+            console.log(post.data)
+            navigation.navigate(`/post/${post.data.id}`)
+        }
+    }, [post])
+        
+
+     return (
+          <form onSubmit={e => {e.preventDefault(); handleCreate();} }>
+             
+             <div>Author: <b>{user.username}</b></div>
+
+             <div>
+                 <label htmlFor="create-title">Title:</label>
+                 <input type="text" value={title} onChange={handleTitle} name="create-title"  id="create-title" />
+             </div>
+
+             <textarea value={content} onChange={handleContent} />
+             <input type="submit" value="Create" />
+         </form>   
+          )
+ }
+ 

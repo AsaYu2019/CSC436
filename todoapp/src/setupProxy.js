@@ -8,4 +8,5 @@ module.exports = function (app) {
           pathRewrite: { '^/api': '' }
         })
       );
+    
 }
